@@ -6,31 +6,29 @@ import { Form } from './Form/Form';
 import { Filter } from './Filter/Filter';
 
 export function App() {
-  let [contacts, setContacts] = useState([]);
-  let [filter, setFilter] = useState('');
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    if (localStorage.getItem('contacts')) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      setContacts((contacts = JSON.parse(localStorage.getItem('contacts'))));
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setContacts(JSON.parse(localStorage.getItem('contacts')));
   }, []);
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
+    if (contacts.length !== 0)
+      localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
   const addToFilter = word => {
     setFilter(word);
   };
   const deleteContact = id => {
-    setContacts(prev => (contacts = prev.filter(contact => contact.id !== id)));
+    setContacts(prev => prev.filter(contact => contact.id !== id));
   };
   const findNecessary = filterQvery => {
-    setFilter(
-      prev =>
-        (filter = prev.contacts.filter(e =>
-          e.name.toLowerCase().includes(filterQvery.toLowerCase())
-        ))
+    setFilter(prev =>
+      prev.contacts.filter(e =>
+        e.name.toLowerCase().includes(filterQvery.toLowerCase())
+      )
     );
   };
   const createContact = obj => {
@@ -43,7 +41,7 @@ export function App() {
       id: nanoid(),
     };
     setContacts(prev => {
-      return (contacts = [newObj, ...prev]);
+      return [newObj, ...prev];
     });
   };
   const forContactList = () => {
